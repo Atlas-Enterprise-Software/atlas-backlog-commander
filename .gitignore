@@ -1,0 +1,16 @@
+# Everything in the workspace is local state except the tool itself.
+# Project folders (cb/, atlas/, ...) hold per-user/per-client data:
+# real configs, backlog snapshots, epics trees, history/, backlog.txt,
+# .bootstrap-done markers — all regenerable or client-specific.
+/*
+!/.gitignore
+!/README.md
+!/CLAUDE.md
+!/workflows/
+!/templates/
+!/docs/
+!/.claude/
+/.claude/*
+!/.claude/commands/
+
+.DS_Store
