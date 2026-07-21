@@ -14,7 +14,10 @@ A Claude Code workspace for managing Azure DevOps backlogs across **multiple org
 
 ## How it works
 
-![Architecture and flow of Atlas Backlog Commander](docs/architecture.svg)
+![Architecture and flow of Atlas Backlog Commander](docs/architecture.png)
+
+<!-- Azure DevOps does not render SVG in markdown; architecture.svg is the editable source, architecture.png the rendered copy. -->
+
 
 The numbered flow is the creation path: your prompt is interpreted under `CLAUDE.md`'s rules, the active project is resolved via `projects.md`, duplicates and the parent are checked against the local snapshot/tree (Grep, not full reads), and only after you confirm the tree preview does anything get written to Azure DevOps through the org's MCP server — then the new rows are merged back into the local snapshot.
 
