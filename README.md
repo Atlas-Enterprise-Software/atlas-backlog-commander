@@ -37,8 +37,8 @@ The numbered flow is the creation path: your prompt is interpreted under `CLAUDE
 1. Clone this repository and **always launch Claude Code from its root** — `CLAUDE.md` (the tool's rules) is auto-loaded from there.
 
    ```bash
-   git clone https://dev.azure.com/AtlasEnterpriseSoftware/AtlasSoftware/_git/Atlas.Backlog.Commander
-   cd Atlas.Backlog.Commander && claude
+   git clone https://github.com/Atlas-Enterprise-Software/atlas-backlog-commander.git
+   cd atlas-backlog-commander && claude
    ```
 
 2. Create your project registry from the template: copy `templates/projects.md` to the repo root as `projects.md`.
