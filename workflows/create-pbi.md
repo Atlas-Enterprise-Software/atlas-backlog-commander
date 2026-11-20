@@ -11,7 +11,7 @@ For backlog items that are **NOT** .NET Web API CRUD or standard Blazor developm
 2. **Identify the repository (mandatory)**: every item must be associated with a repository.
    - If the user specifies it → use it (validate that it exists in `<project_dir>/repos.md` / `repo_list_repos_by_project`).
    - If they do **not** specify it → infer the best fit: rank the available repos (`<project_dir>/repos.md` inventory + full list from `repo_list_repos_by_project`, plus dirs under `repos_root`) by name / `area_path` / `tech_stack` affinity with the item's goal and area. Propose **2-3 candidates** and **confirm** with the user before proceeding.
-   - The chosen repo is reflected in the description (`## Repository` section). Optional: dig deeper with `workflows/analyze-repo.md` (structure reading) if the fit needs validating.
+   - The chosen repo is reflected in the description (`## Repository` section) as a link to the repo: the `{repo web url}` in the template is the `clone_url_pattern` from config without the `<org>@` user prefix. If config has no `clone_url_pattern`, write just the repo name as plain text (no link). Optional: dig deeper with `workflows/analyze-repo.md` (structure reading) if the fit needs validating.
 3. Identify the parent Feature (or whatever parent level the process has):
    - If the user mentions a specific module/repo → use `<project_dir>/repos.md` to map repo → area path → Features under that area in `<project_dir>/epics-tree.md` (**Grep the tree by area/keywords; do not Read it whole**).
    - **Discard** as a candidate any parent with State ∈ `<inactive_parent_states>` from config (only genuinely active parents are valid). The snapshot's State column enables the filter; if you doubt its freshness, verify live with `wit_get_work_item` before linking.
@@ -36,7 +36,7 @@ For backlog items that are **NOT** .NET Web API CRUD or standard Blazor developm
 
 ```markdown
 ## Repository
-{RepoName} ({clone url or associated area_path})
+[{RepoName}]({repo web url})
 
 ## Goal
 {what this item solves and why}

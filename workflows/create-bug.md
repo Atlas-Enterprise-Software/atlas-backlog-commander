@@ -13,7 +13,7 @@
 3. **Identify the repository**: the bug must be associated with a repository.
    - If the user specifies it → use it (validate against `<project_dir>/repos.md` / `repo_list_repos_by_project`).
    - If they do **not** specify it → infer by name / `area_path` / `tech_stack` matching (`<project_dir>/repos.md` inventory + ADO list + dirs under `repos_root`) against the bug's symptom/area; propose 2-3 candidates and confirm.
-   - Reflect it in the description (`## Repository` section).
+   - Reflect it in the description (`## Repository` section) as a link to the repo: the `{repo web url}` in the template is the `clone_url_pattern` from config without the `<org>@` user prefix. If config has no `clone_url_pattern`, write just the repo name as plain text (no link).
 4. Parent (optional): if it will be linked to a Feature/backlog item, **discard** candidates with State ∈ `<inactive_parent_states>` from config (verify live with `wit_get_work_item` if in doubt). If no suitable active parent remains and the bug needs framing → propose creating a Feature (`workflows/create-feature.md`); otherwise, leave it without a parent (valid for bugs).
 
 ### 2. Gather inputs
@@ -37,7 +37,7 @@
 
 ```markdown
 ## Repository
-{RepoName} ({clone url or associated area_path})
+[{RepoName}]({repo web url})
 
 ## Summary
 {one sentence: what fails, where, impact}
