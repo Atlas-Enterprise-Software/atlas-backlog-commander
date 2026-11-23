@@ -26,7 +26,7 @@ Launch **one `general-purpose` agent per item**, all **in a single message** (mu
 - Read `<project_dir>/config.md` and `<project_dir>/repos.md`. **Grep** (do not fully Read) `<project_dir>/backlog-snapshot.md` for duplicates by title/keywords and `<project_dir>/epics-tree.md` for parent candidates (golden rule 2).
 - Classify the item using the "Tool selection" table in `CLAUDE.md`. If an `atlas-*` skill fits (Blazor page/grid/panel, Web API CRUD, etc.), use it **only to structure the draft** (titles, item hierarchy, AC per its templates). Inside a subagent there is no user interaction, so the skill **must not create anything** in ADO.
 - Infer the **repository** (best candidate + 2-3 alternatives) by name/area/tech stack matching (golden rule 7).
-- Infer the **active parent** (golden rule 5: discard `<inactive_parent_states>` states from config); if there is no valid parent, propose creating a Feature (`workflows/create-feature.md`).
+- Infer the **active parent** — mandatory for every item (golden rule 5: discard `<inactive_parent_states>` states from config); if there is no valid parent, propose creating one (`workflows/create-feature.md`, or `create-epic.md` in processes without `<feature>`) as part of the proposal.
 - Write the draft following the templates in `workflows/create-pbi.md` (steps 3 and 4): description with `## Repository` / `## Goal` / `## Technical notes` / `## Out of scope` and Acceptance Criteria.
 - Return a **structured proposal** (markdown): item index, title/description/AC **in English**, work item type (actual name from the project's process), area path, proposed parent (ID + title + state), chosen repo + alternatives, detected duplicates (IDs) and open questions.
 - **FORBIDDEN** to call `wit_create_work_item`, `wit_add_child_work_items`, `wit_update_work_item` or any ADO write in this phase.
@@ -49,7 +49,7 @@ Then show **a single tree** (format from step 5 of `create-pbi.md`, one block pe
 [2] ...
 ```
 
-Flag duplicates and open questions. **Wait for the user's confirmation**: they may approve everything, exclude items or adjust the repo/parent of any of them. Create nothing without an OK.
+Flag duplicates and open questions. An item without a parent is **blocking**: it is not created until the user picks a parent or approves creating one (created first, before the item). **Wait for the user's confirmation**: they may approve everything, exclude items or adjust the repo/parent of any of them. Create nothing without an OK.
 
 ### 5. Phase 2 — Creation (parallel)
 

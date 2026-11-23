@@ -16,7 +16,7 @@ For backlog items that are **NOT** .NET Web API CRUD or standard Blazor developm
    - If the user mentions a specific module/repo → use `<project_dir>/repos.md` to map repo → area path → Features under that area in `<project_dir>/epics-tree.md` (**Grep the tree by area/keywords; do not Read it whole**).
    - **Discard** as a candidate any parent with State ∈ `<inactive_parent_states>` from config (only genuinely active parents are valid). The snapshot's State column enables the filter; if you doubt its freshness, verify live with `wit_get_work_item` before linking.
    - If ambiguous → ask the user and propose 2-3 candidates (active only).
-   - **If after filtering no suitable active parent remains → propose creating a Feature** (`workflows/create-feature.md`). Do not leave the item orphaned without the user's explicit confirmation.
+   - **If after filtering no suitable active parent remains → propose creating one** (`workflows/create-feature.md`, or `create-epic.md` in processes without `<feature>`) and create it first. **The parent is mandatory** (golden rule 5): never create the item without one.
 4. **Predecessor / successor** (golden rule 9): among the parent's active children (Grep `epics-tree.md`) and the other items of the same request, pick the item that must be done first and the one that depends on this one. Several items in one request → chain them in implementation order.
 
 ### 2. Gather inputs
@@ -25,7 +25,7 @@ For backlog items that are **NOT** .NET Web API CRUD or standard Blazor developm
 |-------|----------|---------|
 | Title (English) | yes | — |
 | Repository | **yes** | inferred by matching and confirmed (see Pre-checks) |
-| Parent Feature ID | recommended | — |
+| Parent Feature ID | **yes** | — (golden rule 5) |
 | Area Path | yes | parent Feature's area or derived from the repo |
 | Goal (1-2 sentences) | yes | — |
 | Acceptance criteria | yes | — |

@@ -10,7 +10,7 @@ For business or cross-cutting Features not covered by `atlas-*` skills (the atla
 
 ### 1. Pre-checks
 1. Check the Features section of `<project_dir>/backlog-snapshot.md` for duplicates by title/area — **Grep by keywords/area; do not Read the whole file** (golden rule 2).
-2. Identify the parent Epic: **Grep `<project_dir>/epics-tree.md`** by area/keywords and propose the best-fitting Epic. **Discard** Epics with State ∈ `<inactive_parent_states>` from config (only active Epics are valid); if you doubt the snapshot's freshness, verify live with `wit_get_work_item`. If no active one fits → ask the user whether to create a new Epic (workflow `create-epic.md`) or leave it orphaned.
+2. Identify the parent Epic: **Grep `<project_dir>/epics-tree.md`** by area/keywords and propose the best-fitting Epic. **Discard** Epics with State ∈ `<inactive_parent_states>` from config (only active Epics are valid); if you doubt the snapshot's freshness, verify live with `wit_get_work_item`. If no active one fits → propose creating a new Epic (workflow `create-epic.md`) first. **The parent is mandatory** (golden rule 5): never create a Feature without an Epic.
 3. **Predecessor / successor** (golden rule 9): among the Epic's active Features (Grep `epics-tree.md`) and the other Features of the same request, pick the one that must be delivered first and the one that depends on this Feature.
 
 ### 2. Gather inputs
@@ -18,7 +18,7 @@ For business or cross-cutting Features not covered by `atlas-*` skills (the atla
 | Field | Required | Default |
 |-------|----------|---------|
 | Title (English) | yes | — |
-| Parent Epic ID | recommended | no parent if the user confirms it |
+| Parent Epic ID | **yes** | — (golden rule 5) |
 | Area Path | yes | parent Epic's area, or `default_area_path` |
 | Description (Goal + Scope) | yes | — |
 | Acceptance criteria (high-level) | recommended | — |
