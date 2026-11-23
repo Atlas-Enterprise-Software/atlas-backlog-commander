@@ -33,7 +33,9 @@ Launch **one `general-purpose` agent per item**, all **in a single message** (mu
 
 ### 4. Consolidated preview + confirmation
 
-With all the agents' proposals, show **a single tree** (format from step 5 of `create-pbi.md`, one block per item), headed by the target project:
+With all the agents' proposals, **work out the dependency chain** (golden rule 9): order the items in implementation order (by default, the order of `backlog.txt`); item *n* is the predecessor of item *n+1* when they share parent/area, items that can run in parallel share a predecessor instead, and the first item of each chain links to the active sibling it depends on, if any. The agents can't see each other's proposals, so this is decided here, not in Phase 1.
+
+Then show **a single tree** (format from step 5 of `create-pbi.md`, one block per item), headed by the target project:
 
 ```
 [project: <alias> — <org>/<project>]
@@ -42,6 +44,7 @@ With all the agents' proposals, show **a single tree** (format from step 5 of `c
         Repo: {RepoName}
         Area: {area}
         AC: {n} bullets | Tags: {tags}
+        Predecessor: [1] or #{id} {title} | Successor: [3] or #{id}   ← or "none"
         ⚠ Possible duplicate: #{id} {title}   ← only if applicable
 [2] ...
 ```
@@ -54,14 +57,17 @@ Launch **one agent per approved item**, all in a single message. Each agent rece
 
 - Creates with `wit_create_work_item` on the project's MCP server (fields: `System.Title`, `System.AreaPath`, `System.Tags`, `System.Description`, `Microsoft.VSTS.Common.AcceptanceCriteria` — the latter only if the type has the field; otherwise the criteria go inside the description, see the guard in `create-pbi.md` step 4), using the process's actual `workItemType`.
 - Links to the parent with `wit_work_items_link` (relation `System.LinkTypes.Hierarchy-Reverse`).
+- Links its confirmed predecessor/successor **when it is an existing `#id`** (outside the batch), per `CLAUDE.md → Dependency links`.
 - Returns the **ID + URL** of each created work item, or the **error** if something fails (do not retry more than once).
+
+Dependency links between items of the batch need the IDs of both ends, so the creation agents only link the existing `#id` ends (above). Once **all** agents finish, link the in-batch chain yourself from the returned IDs — each item to its in-batch predecessor; that one link also gives the predecessor its successor, so the `[n]` successors in the preview need no separate link. If an item failed, skip its links and report the broken chain in the summary.
 
 ### 6. Final summary
 
 When **all** the creation agents finish, show a consolidated table:
 
-| # | Item (summary) | Work item | Parent | Repo | URL |
-|---|----------------|-----------|--------|------|-----|
+| # | Item (summary) | Work item | Parent | Predecessor | Repo | URL |
+|---|----------------|-----------|--------|-------------|------|-----|
 
 Include a failures section if there were any (item, cause, retry suggestion).
 

@@ -17,6 +17,7 @@ For backlog items that are **NOT** .NET Web API CRUD or standard Blazor developm
    - **Discard** as a candidate any parent with State ∈ `<inactive_parent_states>` from config (only genuinely active parents are valid). The snapshot's State column enables the filter; if you doubt its freshness, verify live with `wit_get_work_item` before linking.
    - If ambiguous → ask the user and propose 2-3 candidates (active only).
    - **If after filtering no suitable active parent remains → propose creating a Feature** (`workflows/create-feature.md`). Do not leave the item orphaned without the user's explicit confirmation.
+4. **Predecessor / successor** (golden rule 9): among the parent's active children (Grep `epics-tree.md`) and the other items of the same request, pick the item that must be done first and the one that depends on this one. Several items in one request → chain them in implementation order.
 
 ### 2. Gather inputs
 
@@ -68,6 +69,7 @@ For backlog items that are **NOT** .NET Web API CRUD or standard Blazor developm
     Repo: {RepoName}
     Area: {area}
     AC: {n} bullets | Tags: {tags}
+    Predecessor: #{id} {title} | Successor: #{id} {title}   ← or "none"
 ```
 Wait for confirmation.
 
@@ -81,6 +83,8 @@ Wait for confirmation.
   - `Microsoft.VSTS.Common.AcceptanceCriteria`: criteria (only if the type has the field — see step 4 guard)
 
 Link to the parent Feature with `wit_work_items_link` (`System.LinkTypes.Hierarchy-Reverse`).
+
+Then link the confirmed predecessor/successor (`CLAUDE.md → Dependency links`). Several items → create them in predecessor order.
 
 ### 7. Post-create
 

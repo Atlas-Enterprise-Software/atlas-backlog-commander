@@ -29,6 +29,17 @@ The project registry lives in **`projects.md`** (root). Active project resolutio
 6. **Repos**: reuse what is already cloned under `repos_root`; clone only what is missing. To analyze a repo's structure, **direct tree reading** via `workflows/analyze-repo.md` (layers/entities/endpoints).
 7. **Every backlog item (and Bug) is associated with a repository**, indicated in its description (`## Repository` section). If the user does not specify it, infer the best fit by metadata matching (name/area/tech stack) over the available repos, propose 2-3 candidates and confirm.
 8. **Never mix projects**: every creation/edit preview indicates the target project (`[project: <alias> — <org>/<project>]`). On any ambiguity about which project an item goes to, ask before writing to ADO.
+9. **Every new work item gets its predecessor/successor by default** (Epic, Feature, backlog item, Bug): propose them in the preview and create the links together with the item — see *Dependency links* below. Leaving an item without dependencies requires the preview to say so explicitly (`Predecessor: none | Successor: none`).
+
+## Dependency links (predecessor / successor)
+
+Applies to every creation workflow and to the items created through `atlas-*` skills.
+
+- **Candidates**: siblings under the same parent (Grep `<project>/epics-tree.md` for the parent's children — golden rule 2) plus the other items created in the same batch. Exclude siblings in `<removed_states>`; a sibling in `<closed_states>` is valid only as a predecessor and only if the user asks for it.
+- **Batch creation** (several items at once: `atlas-*` skills, several PBIs, `process-backlog-file.md`): chain them in implementation order — by default the order of the list, item *n* is the predecessor of item *n+1*. Items that can be done in parallel share the same predecessor instead of chaining with each other. Also link the first item of the chain to the active sibling it depends on, if any.
+- **Single item**: propose as predecessor the active sibling that must be finished first, and as successor the active sibling that needs this one. If nothing fits, say `none`.
+- **Preview**: each item shows a line `Predecessor: #{id} {title} | Successor: #{id} {title}` (new items in the same batch are referenced as `[n]`). The user can change or drop them before confirming.
+- **Creation**: link types `System.LinkTypes.Dependency-Reverse` (this item → its **predecessor**) and `System.LinkTypes.Dependency-Forward` (this item → its **successor**). ADO adds the inverse link on the other item automatically, so each pair is linked **once**. Create the batch in predecessor order and link each item with `wit_work_items_link` right after creating it, so its predecessor already exists.
 
 ## Workflow execution (multi-project context)
 
@@ -61,7 +72,7 @@ Each ADO project may use a different process template (Scrum, Agile, Basic, CMMI
 | Batch of items described in `<project>/backlog.txt` | `workflows/process-backlog-file.md` (one agent per item in parallel, consolidated preview + confirmation, final summary) |
 | Onboarding of a new ADO org/project | `workflows/add-project.md` |
 
-> Note: the `atlas-*` skills generate items with Scrum types (PBI). They apply as-is only in projects whose `requirement` is `Product Backlog Item`; in other processes, use the generic workflows or map the type when creating.
+> Note: the `atlas-*` skills generate items with Scrum types (PBI). They apply as-is only in projects whose `requirement` is `Product Backlog Item`; in other processes, use the generic workflows or map the type when creating. They don't create dependency links: add the predecessor/successor chain to their preview and link the items after creation (golden rule 9).
 
 ## MCP Azure DevOps — functions to use
 

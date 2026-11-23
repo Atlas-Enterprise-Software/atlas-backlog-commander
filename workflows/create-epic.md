@@ -9,6 +9,7 @@ For strategic Epics / top-level initiatives not covered by `atlas-*` skills.
 ### 1. Pre-checks
 1. Check `<project_dir>/epics-tree.md` for existing Epics with overlapping scope — **Grep the `EPIC #` lines by keywords; do not Read the whole tree** (golden rule 2). If there is a match → warn the user and propose extending the existing one instead of creating a new one.
 2. Read `<project_dir>/config.md` for `default_area_path`, org/project and the process `epic` type.
+3. **Predecessor / successor** (golden rule 9): among the active Epics (Grep the `EPIC #` lines of `epics-tree.md`), pick the initiative that must land first and the one that builds on this Epic.
 
 ### 2. Gather inputs (in a single message if several are missing)
 
@@ -53,6 +54,7 @@ EPIC (new)
 └── Title: {title}
     Area: {area}
     Goals: {n} | Metrics: {n} | Stakeholders: {n}
+    Predecessor: #{id} {title} | Successor: #{id} {title}   ← or "none"
 ```
 Wait for explicit confirmation ("ok", "create", "go").
 
@@ -65,6 +67,8 @@ Wait for explicit confirmation ("ok", "create", "go").
   - `System.AreaPath`: area
   - `System.Description`: HTML from step 3
   - `System.Tags`: tags separated by `;`
+
+Then link the confirmed predecessor/successor (`CLAUDE.md → Dependency links`).
 
 ### 6. Post-create
 

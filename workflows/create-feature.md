@@ -11,6 +11,7 @@ For business or cross-cutting Features not covered by `atlas-*` skills (the atla
 ### 1. Pre-checks
 1. Check the Features section of `<project_dir>/backlog-snapshot.md` for duplicates by title/area — **Grep by keywords/area; do not Read the whole file** (golden rule 2).
 2. Identify the parent Epic: **Grep `<project_dir>/epics-tree.md`** by area/keywords and propose the best-fitting Epic. **Discard** Epics with State ∈ `<inactive_parent_states>` from config (only active Epics are valid); if you doubt the snapshot's freshness, verify live with `wit_get_work_item`. If no active one fits → ask the user whether to create a new Epic (workflow `create-epic.md`) or leave it orphaned.
+3. **Predecessor / successor** (golden rule 9): among the Epic's active Features (Grep `epics-tree.md`) and the other Features of the same request, pick the one that must be delivered first and the one that depends on this Feature.
 
 ### 2. Gather inputs
 
@@ -49,6 +50,7 @@ FEATURE (new) → Epic #{parentId} {parentTitle}
 └── Title: {title}
     Area: {area}
     AC: {n} bullets
+    Predecessor: #{id} {title} | Successor: #{id} {title}   ← or "none"
 ```
 Wait for confirmation.
 
@@ -61,6 +63,8 @@ After creation, **link to the parent Epic**:
 - `sourceId`: id of the newly created Feature
 - `targetId`: id of the Epic
 - `linkType`: `System.LinkTypes.Hierarchy-Reverse` (the Feature is a child of the Epic)
+
+Then link the confirmed predecessor/successor (`CLAUDE.md → Dependency links`).
 
 ### 6. Post-create
 

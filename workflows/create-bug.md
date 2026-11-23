@@ -15,6 +15,7 @@
    - If they do **not** specify it → infer by name / `area_path` / `tech_stack` matching (`<project_dir>/repos.md` inventory + ADO list + dirs under `repos_root`) against the bug's symptom/area; propose 2-3 candidates and confirm.
    - Reflect it in the description (`## Repository` section) as a link to the repo: the `{repo web url}` in the template is the `clone_url_pattern` from config without the `<org>@` user prefix. If config has no `clone_url_pattern`, write just the repo name as plain text (no link).
 4. Parent (optional): if it will be linked to a Feature/backlog item, **discard** candidates with State ∈ `<inactive_parent_states>` from config (verify live with `wit_get_work_item` if in doubt). If no suitable active parent remains and the bug needs framing → propose creating a Feature (`workflows/create-feature.md`); otherwise, leave it without a parent (valid for bugs).
+5. **Predecessor / successor** (golden rule 9): if the bug has a parent, look among its active children for an item that must be done first (predecessor) or that is blocked by this fix (successor); typically the backlog item whose work is blocked by the bug is its successor. Without a parent, `none` is the usual answer.
 
 ### 2. Gather inputs
 
@@ -76,6 +77,7 @@ BUG (new) [Sev: {sev} | Pri: {pri} | Env: {env}]
     Area: {area}
     Parent: {parentId or "none"}
     Tags: {tags}
+    Predecessor: #{id} {title} | Successor: #{id} {title}   ← or "none"
 ```
 Wait for confirmation.
 
@@ -90,7 +92,7 @@ Wait for confirmation.
   - `Microsoft.VSTS.Common.Priority`: priority
   - (the three `Microsoft.VSTS.*` fields only where the process defines them — see Process guard)
 
-Link to parent if it exists (`wit_work_items_link`, `System.LinkTypes.Hierarchy-Reverse`).
+Link to parent if it exists (`wit_work_items_link`, `System.LinkTypes.Hierarchy-Reverse`). Then link the confirmed predecessor/successor (`CLAUDE.md → Dependency links`).
 
 ### 7. Post-create
 
