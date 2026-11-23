@@ -41,6 +41,8 @@ The numbered flow is the creation path: your prompt is interpreted under `CLAUDE
    cd atlas-backlog-commander && claude
    ```
 
+   You don't need to remember to `git pull`: at the start of every session Claude checks the clone against `origin/main` and updates it (or asks, if you're on another branch or have local changes).
+
 2. Create your project registry from the template: copy `templates/projects.md` to the repo root as `projects.md`.
 3. Register your first project — easiest is to just ask Claude (see the first example below); it follows `workflows/add-project.md` and creates the project folder and `config.md` (template: `templates/config.md`) for you.
 4. On first use of a project, the tool runs `workflows/bootstrap.md` (after asking you): it detects the process template, scans the project's repos and the whole backlog, and generates the local snapshot and epics tree.

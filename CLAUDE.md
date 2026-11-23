@@ -18,6 +18,18 @@ The project registry lives in **`projects.md`** (root). Active project resolutio
 - `<project>/epics-tree.md` — hierarchical view Epic→Feature→top-level PBI (or whatever levels the process has).
 - `workflows/*.md` — **shared** actionable templates (parameterized per project): create items, refresh snapshot, project onboarding.
 
+## First step of every session: update the tool
+
+Before **any** backlog work (the first command, workflow or question about a project in the session — before even reading `projects.md`), check that this workspace has everything from the remote `main`. People forget to pull, and a stale clone runs outdated rules and workflows.
+
+1. `git fetch origin main --quiet`, then `git rev-list --count HEAD..origin/main`.
+2. **0 behind** → continue without comment.
+3. **Behind, on `main` and with a clean tree** (`git status --short --untracked-files=no` empty) → `git pull --ff-only origin main`, report in one line how many commits came in (`git log --oneline` of the range), and **re-read `CLAUDE.md`** if it changed — the copy loaded at session start is now stale. Per-project data (`projects.md`, `<project>/`) is gitignored, so the pull never touches it. If the `--ff-only` pull fails (local `main` has diverged from `origin/main`), do not retry, reset or rebase: handle it as step 4.
+4. **Behind, but on another branch, on a detached HEAD, with local changes to versioned files, or with a pull that failed in step 3** → do not pull, switch or stash: tell the user how many commits behind they are and ask whether to update first or continue as is.
+5. **Fetch fails** (offline, auth) → warn in one line and continue.
+
+Only once per session; it does not repeat before each workflow.
+
 ## Golden rules
 
 0. **First use (bootstrap)**: if `<project>/.bootstrap-done` for the active project does **not** exist, before creating/querying work items run `workflows/bootstrap.md` (discovers the process, scans **all** the repos of the DevOps project + the **entire** backlog), after user confirmation.
@@ -45,6 +57,7 @@ Applies to every creation workflow and to the items created through `atlas-*` sk
 
 Every workflow in `workflows/*.md` runs under the same context (stated once here, not repeated per file):
 
+- The workspace was checked against `origin/main` at the start of the session (*First step of every session* above).
 - Resolve the active project via `projects.md` (root) and read `<project>/config.md` before executing — including its **Process** section.
 - Every MCP function is invoked on the server from that config: `mcp__<mcp_server>__<function>`.
 - Every creation/edit preview states the target project: `[project: <alias> — <org>/<project>]` (golden rule 8).
